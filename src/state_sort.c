@@ -45,7 +45,9 @@ int main(int argc, char *argv[]) {
             case 2: {
                 struct Record newRecord;
                 printf("Enter new record details (year month day hour minute second status code):\n");
-                scanf("%d %d %d %d %d %d %d %d", &newRecord.year, &newRecord.month, &newRecord.day, &newRecord.hour, &newRecord.minute, &newRecord.second, &newRecord.status, &newRecord.code);
+                scanf("%d %d %d %d %d %d %d %d", &newRecord.year, &newRecord.month, &newRecord.day,
+                      &newRecord.hour, &newRecord.minute, &newRecord.second, &newRecord.status,
+                      &newRecord.code);
 
                 addRecord(filename, &newRecord);
                 sortRecords(filename);
@@ -65,21 +67,15 @@ int main(int argc, char *argv[]) {
 }
 
 // Функция для чтения записи из файла
-int readRecord(FILE *file, struct Record *record) {
-    return fread(record, sizeof(struct Record), 1, file);
-}
+int readRecord(FILE *file, struct Record *record) { return fread(record, sizeof(struct Record), 1, file); }
 
 // Функция для записи записи в файл
-void writeRecord(FILE *file, const struct Record *record) {
-    fwrite(record, sizeof(struct Record), 1, file);
-}
+void writeRecord(FILE *file, const struct Record *record) { fwrite(record, sizeof(struct Record), 1, file); }
 
 // Функция для вывода записи в консоль
 void printRecord(const struct Record *record) {
-    printf("%04d-%02d-%02d %02d:%02d:%02d Status: %d Code: %d\n",
-           record->year, record->month, record->day,
-           record->hour, record->minute, record->second,
-           record->status, record->code);
+    printf("%04d-%02d-%02d %02d:%02d:%02d Status: %d Code: %d\n", record->year, record->month, record->day,
+           record->hour, record->minute, record->second, record->status, record->code);
 }
 
 // Функция для сравнения двух записей по дате и времени
