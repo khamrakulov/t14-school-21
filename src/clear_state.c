@@ -7,9 +7,7 @@ struct Record {
     int year, month, day, hour, minute, second, status, code;
 };
 
-void print_usage() {
-    printf("Usage: Quest_3 <file_path> <start_date> <end_date>\n");
-}
+void print_usage() { printf("Usage: Quest_3 <file_path> <start_date> <end_date>\n"); }
 
 int is_in_time_range(struct Record *record, char *start_date, char *end_date) {
     // Парсинг дат из строк в структуры времени
