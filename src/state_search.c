@@ -41,7 +41,7 @@ void searchDateInFile(const char *filename, const char *searchDate) {
         snprintf(buffer, sizeof(buffer), "%02d.%02d.%04d", record.day, record.month, record.year);
 
         if (strcmp(buffer, searchDate) == 0) {
-            printf("%s\n", buffer);
+            printf("%d", record.code);
             fclose(file);
             return;
         }
