@@ -8,6 +8,22 @@ struct Record {
 
 #define DATE_LENGTH 11
 
+void searchDateInFile(const char *filename, const char *searchDate);
+
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+        fprintf(stderr, "Usage: %s <filename> <searchDate>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    const char *filename = argv[1];
+    const char *searchDate = argv[2];
+
+    searchDateInFile(filename, searchDate);
+
+    return EXIT_SUCCESS;
+}
+
 void searchDateInFile(const char *filename, const char *searchDate) {
     FILE *file = fopen(filename, "rb");
 
@@ -38,18 +54,4 @@ void searchDateInFile(const char *filename, const char *searchDate) {
     }
 
     fclose(file);
-}
-
-int main(int argc, char *argv[]) {
-    if (argc != 3) {
-        fprintf(stderr, "Usage: %s <filename> <searchDate>\n", argv[0]);
-        return EXIT_FAILURE;
-    }
-
-    const char *filename = argv[1];
-    const char *searchDate = argv[2];
-
-    searchDateInFile(filename, searchDate);
-
-    return EXIT_SUCCESS;
 }
