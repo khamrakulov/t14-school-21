@@ -15,5 +15,11 @@ state_search: src/state_search.o
 state_search.o: src/state_search.c
 	$(CC) $(CFLAGS) -c src/state_search.c
 
+clear_state: src/clear_state.o
+	$(CC) $(CFLAGS) -o ./build/Quest_3 src/clear_state.o
+
+clear_state.o: src/clear_state.c
+	$(CC) $(CFLAGS) -c src/clear_state.c
+
 clean:
 	rm -f *.o build/*
