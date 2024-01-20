@@ -3,17 +3,42 @@
 #include <string.h>
 
 struct Record {
-    int year;
-    int month;
-    int day;
-    int hour;
-    int minute;
-    int second;
-    int status;
-    int code;
+    int year, month, day, hour, minute, second, status, code;
 };
 
-int searchRecordByDate(const char *filename, const char *searchDate, struct Record *foundRecord);
+#define DATE_LENGTH 11
+
+void searchDateInFile(const char *filename, const char *searchDate) {
+    FILE *file = fopen(filename, "rb");
+
+    if (file == NULL) {
+        fprintf(stderr, "Error: Unable to open the file '%s'\n", filename);
+        exit(EXIT_FAILURE);
+    }
+
+    struct Record record;
+    size_t recordsRead;
+
+    while ((recordsRead = fread(&record, sizeof(struct Record), 1, file)) == 1) {
+        char buffer[DATE_LENGTH];
+        // Форматирование даты в формат "дд.мм.гггг"
+        snprintf(buffer, sizeof(buffer), "%02d.%02d.%04d", record.day, record.month, record.year);
+
+        if (strcmp(buffer, searchDate) == 0) {
+            printf("%s\n", buffer);
+            fclose(file);
+            return;
+        }
+    }
+
+    if (feof(file)) {
+        printf("n/a\n");
+    } else if (ferror(file)) {
+        perror("Error reading file");
+    }
+
+    fclose(file);
+}
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -22,38 +47,9 @@ int main(int argc, char *argv[]) {
     }
 
     const char *filename = argv[1];
-    char *date = argv[2];
+    const char *searchDate = argv[2];
 
-    struct Record foundRecord;
-
-    if (!searchRecordByDate(filename, date, &foundRecord)) {
-        printf("n/a");
-        return EXIT_SUCCESS;
-    }
-
-    printf("%d", foundRecord.code);
+    searchDateInFile(filename, searchDate);
 
     return EXIT_SUCCESS;
-}
-
-int searchRecordByDate(const char *filename, const char *searchDate, struct Record *foundRecord) {
-    FILE *file = fopen(filename, "rb");
-    if (!file) {
-        perror("Unable to open file");
-        return 0;
-    }
-
-    while (fread(foundRecord, sizeof(struct Record), 1, file) == 1) {
-        char dateStr[20];
-        // Форматирование даты
-        sprintf(dateStr, "%02d.%02d.%04d", foundRecord->day, foundRecord->month, foundRecord->year);
-
-        if (strcmp(dateStr, searchDate) == 0) {
-            fclose(file);
-            return 1;  // Если запись найдена, то возвращаем 1
-        }
-    }
-
-    fclose(file);
-    return 0;  // Если запись не найдена, то возвращаем 0
 }
